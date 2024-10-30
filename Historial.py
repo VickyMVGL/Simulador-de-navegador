@@ -8,7 +8,8 @@ class PaginaHistorial:
 class PilaArchivos:
     def __init__(self):
         self.cabeza = None
-    def agregar_archivo(self, dominio, fecha, hora, ):
+        
+    def agregar_archivo(self, dominio, fecha, hora):
         nuevo_nodo = PaginaHistorial(dominio, fecha, hora)
         if not self.cabeza:
             self.cabeza = nuevo_nodo
@@ -28,7 +29,7 @@ class PilaArchivos:
     def buscar_archivo(self, dominio):
         actual = self.cabeza
         while actual:
-            if actual.nombre == dominio:
+            if actual.dominio == dominio:
                 return True
             actual = actual.siguiente
         return False
@@ -51,13 +52,38 @@ class PilaArchivos:
             actual = actual.siguiente
         return False
     
-    def obtener_posicion(self, nombre):
+    def obtener_posicion(self, dominio):
         actual = self.cabeza
         pos = 0
         while actual:
-            if actual.nombre == nombre:
+            if actual.dominio == dominio:
                 return pos
             actual = actual.siguiente
             pos += 1
         return -1
     
+    def guardar_historial(self, archivo_csv='historial.csv'):
+        with open(archivo_csv, 'w') as file:
+            file.write("Dominio,Fecha,Hora\n")
+            actual = self.cabeza
+            while actual:
+                file.write(f"{actual.dominio},{actual.fecha},{actual.hora}\n")
+                actual = actual.siguiente
+        print(f"Historial guardado en {archivo_csv}.")
+
+
+""""
+#Pruebas
+
+pila = PilaArchivos()
+
+# Agregar páginas al historial
+pila.agregar_archivo("www.ejemplo.com", "2024-10-30", "10:00")
+pila.agregar_archivo("www.otroejemplo.com", "2024-10-31", "12:00")
+
+# Mostrar el historial
+pila.mostrar_historial()
+
+# Guardar el historial en un archivo CSV
+pila.guardar_historial()
+"""

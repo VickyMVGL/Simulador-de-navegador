@@ -88,6 +88,7 @@ class BrowserTabs:
         if self.current_tab:
             self.current_tab.is_active = True
 
+""""
 # Ejemplo de uso
 browser = BrowserTabs()
 
@@ -95,15 +96,18 @@ browser = BrowserTabs()
 browser.open_tab("google.com", "Google", load_time=2.5)
 browser.open_tab("github.com", "GitHub", load_time=3.1)
 browser.open_tab("openai.com", "OpenAI", load_time=4.0)
-
+print("---------------1-----------------")
 browser.show_tabs()  # Mostrar todas las pestañas con información detallada
 
 # Navegar entre pestañas
 browser.move_to_next_tab()  # Moverse a la siguiente pestaña
 browser.move_to_previous_tab()  # Moverse a la pestaña anterior
+print("---------------2-----------------")
 
 # Cerrar la pestaña actual
 browser.close_current_tab()
+print("--------------3------------------")
 
 # Mostrar las pestañas restantes
 browser.show_tabs()
+"""

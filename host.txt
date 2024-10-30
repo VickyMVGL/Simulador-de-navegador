@@ -1,6 +1,6 @@
-C:/google.html 192.168.102 www.google.com
 C:/youtube.html 192.168.103 www.youtube.com
 C:/github.html 192.168.104 www.github.com
 C:/whatsapp.html 192.168.105 www.whatsapp.com
 C:/ujap.html 192.168.106 www.acropolis.com
 C:/gemini.html 192.168.107 www.gemini.com
+C:/google.html 192.168.102 www.google.com

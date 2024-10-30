@@ -10,4 +10,4 @@ class Pagina:
         print("Nombre de dominio: ", self.dominio)
         print("Direccion IP: " , self.ip)
         print("Direccion del archivo html: ", self.html)
-
+        print("")

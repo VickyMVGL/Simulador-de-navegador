@@ -64,27 +64,34 @@ class Principal:
                     fecha_actual = datetime.now().strftime("%Y-%m-%d")
                     hora_actual = datetime.now().strftime("%H:%M:%S")
                     historial = Historial.PilaArchivos()
-                    historial.agregar_archivo(url_o_ip, fecha_actual, hora_actual)
+                    dominio = str(url_o_ip)
+                    fecha = str(fecha_actual)
+                    hora = str(hora_actual)
+                    historial.agregar_archivo(dominio, fecha, hora)
                     self.leer_comando()
-                    return
+                    
+                    
             print("No se encontró la página.")
             self.leer_comando()
 
         elif c.startswith("nueva_pestana "):
             _, url_o_ip = c.split(" ", 1)
-            Pestaña.BrowserTabs.open_tab(url_o_ip, url_o_ip)  # Llama al método para abrir una nueva pestaña
+            tab = Pestaña.BrowserTabs()
+            tab.open_tab(url_o_ip, url_o_ip) 
             print("")
             self.leer_comando()
             
         elif c == "mostrar_pestanas":
-            Pestaña.BrowserTabs.show_tabs(self)  # Llama al método para mostrar las pestañas abiertas
+            tab = Pestaña.BrowserTabs()
+            tab.show_tabs(self)  
             print("")
             self.leer_comando()
             
         elif c == "cambiar_pestana":
             try:
                 numero = int(input("Ingrese el número de la pestaña a la que desea cambiar: "))
-                Pestaña.BrowserTabs.open_a_tab(numero)
+                tab = Pestaña.BrowserTabs()
+                tab.open_a_tab(numero)
                 print("")
                 self.leer_comando()
             except ValueError:
@@ -94,17 +101,20 @@ class Principal:
 
 
         elif c == "cerrar_pestana":
-            Pestaña.BrowserTabs.close_current_tab()  
+            tab = Pestaña.BrowserTabs()
+            tab.close_current_tab()  
             print("")
             self.leer_comando()
 
         elif c == "pestana_anterior":
-            Pestaña.BrowserTabs.move_to_previous_tab(self)
+            tab = Pestaña.BrowserTabs()
+            tab.move_to_previous_tab(self)
             print("")
             self.leer_comando()
 
         elif c == "pestana_siguiente":
-            Pestaña.BrowserTabs.move_to_next_tab() 
+            tab = Pestaña.BrowserTabs()
+            tab.move_to_next_tab() 
             print("")
             self.leer_comando()
 
@@ -116,18 +126,21 @@ class Principal:
             
         elif c.startswith("descargar "):
             _, url = c.split(" ", 1)
-            Descargas.ColaArchivos.agregar_archivo(url, "Fecha de ejemplo", "Tamaño de ejemplo") 
+            desc = Descargas.ColaArchivos()
+            desc.agregar_descarga(url, "Fecha de ejemplo", "Tamaño de ejemplo") 
             print("")
             self.leer_comando()
             
         elif c == "mostrar_descargas":
-            Descargas.ColaArchivos.mostrar_archivos()  
+            desc = Descargas.ColaArchivos()
+            desc.mostrar_descarga()  
 
         elif c.startswith("cancelar_descarga "):
             _, n = c.split(" ", 1)
             n = int(n)
+            desc = Descargas.ColaArchivos()
             for _ in range(n):
-                Descargas.ColaArchivos.eliminar_archivo()  
+                desc.eliminar_descarga()  
 
         elif c == "listar_paginas":
             print("")
@@ -140,6 +153,15 @@ class Principal:
             historial = Historial.PilaArchivos()
             historial.guardar_historial(archivo_csv='historial.csv')
         
+        elif c == "mostrar_contenido_basico":
+            print("")
+            self.leer_comando()
+            pass
+            
+        elif c =="mostrar_contenido_plano":
+            print("")
+            self.leer_comando()
+            pass
             
         elif c == "salir":
             print("Muchas gracias, hasta pronto!")
@@ -149,7 +171,79 @@ class Principal:
             print("Por favor ingrese un comando valido...")
             self.leer_comando()        
 
+class PaginaHistorial:
+    def __init__(self, dominio, fecha, hora):
+        self.dominio = dominio
+        self.fecha = fecha
+        self.hora = hora
+        self.siguiente = None
 
+class PilaArchivos:
+    def __init__(self):
+        self.cabeza = None
+        
+    def agregar_archivo(self, dominio, fecha, hora):
+        nuevo_nodo = PaginaHistorial(dominio, fecha, hora)
+        if not self.cabeza:
+            self.cabeza = nuevo_nodo
+        else:
+            nuevo_nodo.siguiente = self.cabeza
+            self.cabeza = nuevo_nodo
+
+    def mostrar_historial(self):
+        actual = self.cabeza
+        while actual:
+            print("Dominio: ", actual.dominio)
+            print("Fecha: ", actual.fecha)
+            print("Hora: ", actual.hora)
+            print("------------------------------------------")
+            actual = actual.siguiente
+
+    def buscar_archivo(self, dominio):
+        actual = self.cabeza
+        while actual:
+            if actual.dominio == dominio:
+                return True
+            actual = actual.siguiente
+        return False
+    
+    def eliminar_archivo(self):
+        if not self.cabeza:
+            return None
+        eliminado = self.cabeza
+        self.cabeza = self.cabeza.siguiente
+        return eliminado
+    
+    def modificar_archivo(self, dominio, nuevo_dominio, fecha, hora):
+        actual = self.cabeza
+        while actual:
+            if actual.dominio == dominio:
+                actual.dominio = nuevo_dominio
+                actual.fecha= fecha
+                actual.hora = hora
+                return True
+            actual = actual.siguiente
+        return False
+    
+    def obtener_posicion(self, dominio):
+        actual = self.cabeza
+        pos = 0
+        while actual:
+            if actual.dominio == dominio:
+                return pos
+            actual = actual.siguiente
+            pos += 1
+        return -1
+    
+    def guardar_historial(self, archivo_csv='historial.csv'):
+        with open(archivo_csv, 'w') as file:
+            file.write("Dominio,Fecha,Hora\n")
+            actual = self.cabeza
+            while actual:
+                file.write(f"{actual.dominio},{actual.fecha},{actual.hora}\n")
+                actual = actual.siguiente
+        print(f"Historial guardado en {archivo_csv}.")
+        
 p = Principal()
 p.Abrir_txt()
 
@@ -157,31 +251,3 @@ p.leer_comando()
 
 
 #"C:\\Users\\Victoria\\Desktop\\Proyectos Actuales\\Proyecto del navegador\\Simulador-de-navegador\\Assets\\host.txt", "r"
-
-"""
-    def leer_comando(self, comando):
-        paginas= self.lista_paginas
-        c, control = comando.split(" ")
-
-        elif c == "guardar_historial":
-            if Historial.PilaArchivos.cabeza != "null":
-                Historial.PilaArchivos.agregar_archivo(self)
-                Historial.PilaArchivos.guardar_historial(self)
-                self.leer_comando()
-                
-            else:
-                print("No hay nada que guardar...")
-                self.leer_comando()
-                
-                
-        elif c == "ir":
-            for pagina in paginas:
-                #if control == pagina.dominio:
-                    pagina.vizualizar()
-                    break
-                #else:
-                    pass
-                
-
-
-"""

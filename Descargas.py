@@ -10,7 +10,7 @@ class ColaArchivos:
         self.cabeza = None
         self.cola = None
 
-    def agregar_archivo(self, nombre, fecha_creacion, tamano):
+    def agregar_descarga(self, nombre, fecha_creacion, tamano):
         nuevo_nodo = ArchivoDescargas(nombre, fecha_creacion, tamano)
         if not self.cabeza:
             self.cabeza = nuevo_nodo
@@ -20,7 +20,7 @@ class ColaArchivos:
             self.cola = nuevo_nodo
 
 
-    def mostrar_archivos(self):
+    def mostrar_descarga(self):
         actual = self.cabeza
         while actual:
             print("Nombre:", actual.nombre)
@@ -30,7 +30,7 @@ class ColaArchivos:
             actual = actual.siguiente
 
 
-    def buscar_archivo(self, nombre):
+    def buscar_descarga(self, nombre):
         actual = self.cabeza
         while actual:
             if actual.nombre == nombre:
@@ -38,7 +38,7 @@ class ColaArchivos:
             actual = actual.siguiente
         return False
         
-    def eliminar_archivo(self):
+    def eliminar_descarga(self):
         if not self.cabeza:
             return None
         eliminado = self.cabeza
@@ -63,8 +63,8 @@ class ColaArchivos:
 cola = ColaArchivos()
 
 # Agregar archivos a la cola de descargas
-cola.agregar_archivo("http://ejemplo.com/archivo1.zip", "2024-10-30","23gb")
-cola.agregar_archivo("http://ejemplo.com/archivo2.zip", "2024-10-31", "44mb")
+cola.agregar_descarga("http://ejemplo.com/archivo1.zip", "2024-10-30","23gb")
+cola.agregar_descarga("http://ejemplo.com/archivo2.zip", "2024-10-31", "44mb")
 
 # Guardar el estado de las descargas en un archivo CSV
 cola.guardar_estado_descargas()

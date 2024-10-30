@@ -16,7 +16,7 @@ class Principal:
         lineas = archivo.readlines()
         
         for linea in lineas:
-            html, ip, dominio = linea.split(" ")
+            html, ip, dominio, xx = linea.split(" ")
             pag = pagina.Pagina(html, ip, dominio)
             self.lista_paginas.append(pag)
         archivo.close()

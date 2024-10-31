@@ -9,6 +9,8 @@ class Principal:
 
     def __init__(self):
         self.lista_paginas = []
+        self.historial = Historial.PilaArchivos()
+        self.desc = Descargas.ColaArchivos()
         
     def Abrir_txt(self):
         archivo=open(r'C:\Users\Manuel Hernandez\Documents\UJAP\Algoritmos 2\Simulador-de-navegador\host.txt')
@@ -63,11 +65,10 @@ class Principal:
                     pagina.vizualizar()
                     fecha_actual = datetime.now().strftime("%Y-%m-%d")
                     hora_actual = datetime.now().strftime("%H:%M:%S")
-                    historial = Historial.PilaArchivos()
                     dominio = str(url_o_ip)
                     fecha = str(fecha_actual)
                     hora = str(hora_actual)
-                    historial.agregar_archivo(dominio, fecha, hora)
+                    self.historial.agregar_archivo(dominio, fecha, hora)
                     self.leer_comando()
                     
                     
@@ -119,28 +120,29 @@ class Principal:
             self.leer_comando()
 
         elif c == "mostrar_historial":
-            historial = Historial.PilaArchivos()
-            historial.mostrar_historial() 
+            self.historial.mostrar_historial() 
             print("")
             self.leer_comando()
             
         elif c.startswith("descargar "):
             _, url = c.split(" ", 1)
-            desc = Descargas.ColaArchivos()
-            desc.agregar_descarga(url, "Fecha de ejemplo", "Tamaño de ejemplo") 
+            
+            self.desc.agregar_descarga(url, "Fecha de ejemplo", "Tamaño de ejemplo") 
             print("")
             self.leer_comando()
             
         elif c == "mostrar_descargas":
-            desc = Descargas.ColaArchivos()
-            desc.mostrar_descarga()  
+            
+            self.desc.mostrar_descarga()  
+            self.leer_comando()
 
         elif c.startswith("cancelar_descarga "):
             _, n = c.split(" ", 1)
             n = int(n)
-            desc = Descargas.ColaArchivos()
+            
             for _ in range(n):
-                desc.eliminar_descarga()  
+                self.desc.eliminar_descarga()
+            self.leer_comando()
 
         elif c == "listar_paginas":
             print("")
@@ -150,8 +152,8 @@ class Principal:
             self.leer_comando()
             
         elif c == "guardar_historial":
-            historial = Historial.PilaArchivos()
-            historial.guardar_historial(archivo_csv='historial.csv')
+            
+            self.historial.guardar_historial(archivo_csv='historial.csv')
         
         elif c == "mostrar_contenido_basico":
             print("")

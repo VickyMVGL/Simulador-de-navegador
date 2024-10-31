@@ -88,10 +88,10 @@ class BrowserTabs:
         if self.current_tab:
             self.current_tab.is_active = True
 
-""""
+
 # Ejemplo de uso
 browser = BrowserTabs()
-
+"""
 # Abrir nuevas pestañas con atributos adicionales
 browser.open_tab("google.com", "Google", load_time=2.5)
 browser.open_tab("github.com", "GitHub", load_time=3.1)

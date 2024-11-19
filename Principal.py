@@ -1,4 +1,4 @@
-import pagina
+import paginas
 import Descargas
 import Historial
 import Vizualizacion

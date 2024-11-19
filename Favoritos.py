@@ -1,10 +1,9 @@
 class NodoPagina:
-    def __init__(self, id, , monto, dir_facturacion, dir_envio):
+    def __init__(self, id, html, ip, dominio):
         self.id = id
-        self.descripcion = descripcion
-        self.monto = monto
-        self.dir_facturacion = dir_facturacion
-        self.dir_envio = dir_envio 
+        self.html = html
+        self.ip = ip
+        self.dominio = dominio
         self.izquierda = None
         self.derecha = None
         self.altura = 1
@@ -47,14 +46,14 @@ class AVLFileSystem:
 
         return y
 
-    def insertar(self, nodo, id, descripcion, monto, dir_facturacion, dir_envio):
+    def agregar(self, nodo, id, html, ip, dominio):
         if not nodo:
-            return NodoArchivo(id,  descripcion, monto, dir_facturacion, dir_envio)
+            return NodoPagina(id, html, ip, dominio)
 
         if id < nodo.id:
-            nodo.izquierda = self.insertar(nodo.izquierda, id,  descripcion, monto, dir_facturacion, dir_envio)
+            nodo.izquierda = self.agregar(nodo.izquierda, id, html, ip, dominio)
         elif id > nodo.id:
-            nodo.derecha = self.insertar(nodo.derecha, id, descripcion, monto, dir_facturacion, dir_envio)
+            nodo.derecha = self.agregar(nodo.derecha,id, html, ip, dominio)
         else:
             return nodo
 
@@ -78,24 +77,23 @@ class AVLFileSystem:
 
         return nodo
 
-    def insertar_archivo(self, id,  descripcion, monto, dir_facturacion, dir_envio):
-        self.raiz = self.insertar(self.raiz, id,  descripcion, monto, dir_facturacion, dir_envio)
+    def agregar_favorito(self, id, html, ip, dominio):
+        self.raiz = self.agregar(self.raiz, id, html, ip, dominio)
 
 
     def preorden(self, nodo):
         print(nodo.id)
-        print(nodo.descripcion)
+        print(nodo.dominio)
         if nodo.izquierda != None:
             self.preorden(nodo.izquierda)
         if nodo.derecha != None:
-            
             self.preorden(nodo.derecha)
         
             
 # Ejemplo de uso
 avl_fs = AVLFileSystem()
-avl_fs.insertar_archivo("1", "p1", 123, "SD", "Ca")
-avl_fs.insertar_archivo("2", "p2", 150, "CA", "CSS")
-avl_fs.insertar_archivo("3", "p3", 100, "Sd", "Css")
+avl_fs.agregar_favorito("1", "p1", 123, "SD")
+avl_fs.agregar_favorito("2", "p2", 150, "CA")
+avl_fs.agregar_favorito("3", "p3", 100, "Sd")
 
 avl_fs.preorden(avl_fs.raiz)

@@ -11,7 +11,7 @@ class Principal:
         self.lista_paginas = []
         
     def Abrir_txt(self):
-        archivo=open(r'C:\Users\Manuel Hernandez\Documents\UJAP\Algoritmos 2\Simulador-de-navegador\host.txt')
+        archivo=open(r'C:\Users\Us\Desktop\Simulador de navegador\Simulador-de-navegador\host.txt')
         print(archivo)
         lineas = archivo.readlines()
         

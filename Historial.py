@@ -72,13 +72,13 @@ class PilaArchivos:
         print(f"Historial guardado en {archivo_csv}.")
 
 
-""""
+"""
 #Pruebas
 
 pila = PilaArchivos()
 
 # Agregar páginas al historial
-pila.agregar_archivo("www.ejemplo.com", "2024-10-30", "10:00")
+pila.agregar_archivo("193.568.089", "2024-10-30", "10:00")
 pila.agregar_archivo("www.otroejemplo.com", "2024-10-31", "12:00")
 
 # Mostrar el historial

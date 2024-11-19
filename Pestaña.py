@@ -2,19 +2,19 @@ class Tab:
     def __init__(self, url, title, load_time=0):
         self.url = url
         self.title = title
-        self.load_time = load_time  # Tiempo de carga de la página
-        self.is_active = False  # Pestaña activa
-        self.history = [url]  # Historial de URLs visitadas en la pestaña
-        self.next = None  # Siguiente pestaña
-        self.prev = None  # Pestaña anterior
+        self.load_time = load_time  
+        self.is_active = False  
+        self.history = [url]  
+        self.next = None  
+        self.prev = None  
 
     def visit_url(self, new_url):
-        """Visitar una nueva URL en esta pestaña, actualizando el historial."""
+        
         self.history.append(new_url)
         self.url = new_url
 
     def show_info(self):
-        """Muestra la información detallada de la pestaña."""
+        
         status = " (Activa)" if self.is_active else ""
         print("Pestaña: " + self.title + " URL: " + self.url + " Tiempo de carga: " + str(self.load_time) + "seg ")
         print("Historial: "+ self.history[0])
@@ -27,10 +27,10 @@ class BrowserTabs:
         new_tab = Tab(url, title, load_time)
         if not self.current_tab:
             self.current_tab = new_tab
-            self.current_tab.is_active = True  # La primera pestaña abierta es la activa
+            self.current_tab.is_active = True  
         else:
             temp = self.current_tab
-            while temp.next:  # Vamos al final de la lista
+            while temp.next:  
                 temp = temp.next
             temp.next = new_tab
             new_tab.prev = temp
@@ -41,7 +41,7 @@ class BrowserTabs:
         else:
             temp = self.current_tab
             cont = 0
-            while cont < numero:  # Vamos al final de la lista
+            while cont < numero:  
                 temp = temp.next
                 cont += 1
             temp.show_info()
@@ -49,23 +49,23 @@ class BrowserTabs:
     def show_tabs(self):
         temp = self.current_tab
         while temp:
-            temp.show_info()  #Mostrar información detallada de cada pestaña
+            temp.show_info()  
             temp = temp.next
 
     def move_to_next_tab(self):
         if self.current_tab and self.current_tab.next:
-            self.current_tab.is_active = False  # Desactivar la pestaña actual
+            self.current_tab.is_active = False  
             self.current_tab = self.current_tab.next
-            self.current_tab.is_active = True  # Activar la siguiente pestaña
+            self.current_tab.is_active = True  
             print("Movido a: " + self.current_tab.title)
         else:
             print("No hay más pestañas.")
 
     def move_to_previous_tab(self):
         if self.current_tab and self.current_tab.prev:
-            self.current_tab.is_active = False  # Desactivar la pestaña actual
+            self.current_tab.is_active = False  
             self.current_tab = self.current_tab.prev
-            self.current_tab.is_active = True  # Activar la pestaña anterior
+            self.current_tab.is_active = True  
             print("Movido a: " + self.current_tab.title)
         else:
             print("No hay pestaña anterior.")
@@ -88,10 +88,10 @@ class BrowserTabs:
         if self.current_tab:
             self.current_tab.is_active = True
 
-""""
+
 # Ejemplo de uso
 browser = BrowserTabs()
-
+"""
 # Abrir nuevas pestañas con atributos adicionales
 browser.open_tab("google.com", "Google", load_time=2.5)
 browser.open_tab("github.com", "GitHub", load_time=3.1)

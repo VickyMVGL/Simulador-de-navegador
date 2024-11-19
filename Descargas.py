@@ -58,14 +58,21 @@ class ColaArchivos:
         print(f"Estado de descargas guardado en {archivo_csv}.")
 
 
-"""
 
+"""
 cola = ColaArchivos()
 
 # Agregar archivos a la cola de descargas
 cola.agregar_descarga("http://ejemplo.com/archivo1.zip", "2024-10-30","23gb")
 cola.agregar_descarga("http://ejemplo.com/archivo2.zip", "2024-10-31", "44mb")
 
+cola.mostrar_descarga()
 # Guardar el estado de las descargas en un archivo CSV
+#cola.guardar_estado_descargas()
+
+cola.eliminar_descarga()
+cola.eliminar_descarga()
+
+cola.mostrar_descarga()
 cola.guardar_estado_descargas()
 """

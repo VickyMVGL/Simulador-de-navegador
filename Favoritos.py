@@ -49,7 +49,6 @@ class AVLFileSystem:
     def agregar(self, nodo, id, html, ip, dominio):
         if not nodo:
             return NodoPagina(id, html, ip, dominio)
-
         if id < nodo.id:
             nodo.izquierda = self.agregar(nodo.izquierda, id, html, ip, dominio)
         elif id > nodo.id:
@@ -79,8 +78,63 @@ class AVLFileSystem:
 
     def agregar_favorito(self, id, html, ip, dominio):
         self.raiz = self.agregar(self.raiz, id, html, ip, dominio)
+    
+    def obtener_minimo(self, nodo):
+        actual = nodo
+        while actual.izquierda:
+            actual = actual.izquierda
+        return actual
 
+    def eliminar(self, nodo, id, html, ip, dominio):
+        #Esta va a ser la parte de eliminar
+        if not nodo:
+            return nodo
 
+        # Buscar el nodo a eliminar
+        if id < nodo.id:
+            nodo.izquierda = self.eliminar(nodo.izquierda, id, html, ip, dominio)
+        elif id > nodo.id:
+            nodo.derecha = self.eliminar(nodo.derecha, id, html, ip, dominio)
+        else:
+            # Caso 1: Nodo con uno o ningún hijo
+            if not nodo.izquierda:
+                return nodo.derecha
+            elif not nodo.derecha:
+                return nodo.izquierda
+        
+            # Caso 2: Nodo con dos hijos
+            temp = self.obtener_minimo(nodo.derecha)
+            nodo.id = temp.id
+            nodo.html = temp.html
+            nodo.ip = temp.ip
+            nodo.dominio = temp.dominio
+            nodo.derecha = self.eliminar(nodo.derecha, temp.id, temp.html, temp.ip, temp.dominio)
+            
+        #Esta es la parte que balancea el arbol
+
+        nodo.altura = 1 + max(self.obtener_altura(nodo.izquierda), self.obtener_altura(nodo.derecha))
+
+        balance = self.obtener_balance(nodo)
+
+        if balance > 1 and id < nodo.izquierda.id:
+            return self.rotar_derecha(nodo)
+
+        if balance < -1 and id > nodo.derecha.id:
+            return self.rotar_izquierda(nodo)
+
+        if balance > 1 and id > nodo.izquierda.id:
+            nodo.izquierda = self.rotar_izquierda(nodo.izquierda)
+            return self.rotar_derecha(nodo)
+
+        if balance < -1 and id < nodo.derecha.id:
+            nodo.derecha = self.rotar_derecha(nodo.derecha)
+            return self.rotar_izquierda(nodo)
+
+        return nodo
+
+    def eliminar_favorito(self, id, html, ip, dominio):
+        self.raiz = self.eliminar(self.raiz, id, html, ip, dominio)
+    
     def preorden(self, nodo):
         print(nodo.id)
         print(nodo.dominio)
@@ -95,5 +149,10 @@ avl_fs = AVLFileSystem()
 avl_fs.agregar_favorito("1", "p1", 123, "SD")
 avl_fs.agregar_favorito("2", "p2", 150, "CA")
 avl_fs.agregar_favorito("3", "p3", 100, "Sd")
+
+avl_fs.preorden(avl_fs.raiz)
+print("______________")
+
+avl_fs.eliminar_favorito("2", "p2", 150, "CA")
 
 avl_fs.preorden(avl_fs.raiz)

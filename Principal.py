@@ -46,11 +46,11 @@ class Principal:
         print("--> guardar_historial: Guarda el historial en un archivo csv")
         print("--> buscar <palabra_clave>: Realiza una búsqueda de palabras clave en el historial de búsquedas")
         print("--> mostrar_historial_busquedas: Muestra todas las búsquedas almacenadas en orden")
-        print("--> eliminar_busqueda_key")
-        print("--> eliminar_busqueda_fecha")            
-        print("--> agregar_cache")           
-        print("--> obtener_cache")           
-        print("--> vaciar_cache")
+        print("--> eliminar_busqueda_key <palabar clave>: Elimina todas las entradas de búsqueda que contengan la palabra clave especificada")
+        print("--> eliminar_busqueda_fecha <fecha>: Elimina todas las entradas de búsqueda que sean posteriores a la fecha especificada.")            
+        print("--> agregar_cache <url> <contenido>: Agrega contenido a la caché para la URL especificada")           
+        print("--> obtener_cache <url>: Recupera el contenido almacenado en caché para la URL especificada")           
+        print("--> vaciar_cache <url> o <fecha>: : Permite vaciar la caché de manera selectiva")
         print("--> salir: Sale del navegador")
 
 
@@ -174,35 +174,45 @@ class Principal:
             self.leer_comando()
             pass
 
-        elif c.startswith("buscar"):
+        elif c.startswith("buscar "):
             self.hist_busqueda.buscar()
             self.leer_comando()
-            
             
 
         elif c == "mostrar_historial_busquedas":
             self.hist_busqueda.mostrar_historial()
             self.leer_comando()
 
-        elif c.startswith("eliminar_busqueda_key"):
+        elif c.startswith("eliminar_busqueda_key "):
             _, n =c.split(" ",1)
             self.hist_busqueda.eliminar_por_clave(n)
             self.leer_comando()
             
         
-        elif c.startswith("eliminar_busqueda_fecha"):
+        elif c.startswith("eliminar_busqueda_fecha "):
             _, n =c.split(" ",1)
             self.hist_busqueda.eliminar_por_fecha(n)
             self.leer_comando()
             
 
-        elif c.startswith("agregar_cache"):
+        elif c.startswith("agregar_cache "):
+            _, url_o_ip = c.split(" ", 1)
+            for pagina in self.lista_paginas:
+                if pagina.dominio == url_o_ip or pagina.ip == url_o_ip:
+                    url_o_ip = str(url_o_ip)
+                    contenido = str()
+                    self.cache.agregar_cache(url_o_ip, contenido)
+                    self.leer_comando()
             self.leer_comando()
 
-        elif c.startswith("obtener_cache"):
+        elif c.startswith("obtener_cache "):
+            _, url =c.split(" ",1)
+            self.cache.obtener_cache(url)
             self.leer_comando()
 
-        elif c.startswith("vaciar_cache"):
+        elif c.startswith("vaciar_cache "):
+            _, url =c.split(" ",1)
+            self.cache.vaciar_cache(url)
             self.leer_comando()
         
         #Favoritos

@@ -1,78 +1,165 @@
 import os
-from anytree import Node, RenderTree, PreOrderIter
+from bs4 import BeautifulSoup
 
-class ArbolNarioPaginas:
-    def __init__(self, archivo_host, carpeta_simulada):
-        self.archivo_host = archivo_host
-        self.carpeta_simulada = carpeta_simulada
-        self.raiz = Node("Raíz")
-        self.cargar_host()
+class Pagina:
+    def __init__(self, html, ip, dominio):
+        self.html = html
+        self.ip = ip
+        self.dominio = dominio
 
-    def cargar_host(self):
-        """
-        Carga la estructura del archivo host.txt en el árbol N-ario.
-        El archivo debe tener líneas con formato: URL/IP, ruta del archivo.
-        Ejemplo:
-        192.168.102,www.google.com,google.html
-        """
-        if not os.path.isfile(self.archivo_host):
-            print(f"El archivo host '{self.archivo_host}' no existe.")
-            return
+    def __lt__(self, other):
+        return self.ip < other.ip
+
+    def __eq__(self, other):
+        return self.ip == other.ip
+
+    def __str__(self):
+        return f"IP: {self.ip}, Dominio: {self.dominio}, Html: {self.html}"
+
+    def __repr__(self):
+        return str(self)
+
+
+class NTreeNode:
+    def __init__(self, pagina=None):
+        self.pagina = pagina
+        self.children = []
+
+    def insert(self, pagina):
+        self.children.append(NTreeNode(pagina))
+
+    def __str__(self):
+        return str(self.pagina)
+
+
+class NTree:
+    def __init__(self):
+        self.root = None
+
+    def Abrir_txt(self):
+        archivo=open(r'host.txt')
+        print(archivo)
+        lineas = archivo.readlines()
+        lista_paginas = []
         
-        try:
-            with open(self.archivo_host, 'r', encoding='utf-8') as archivo:
-                for linea in archivo:
-                    partes = linea.strip().split(',')
-                    if len(partes) == 3:
-                        ip, url, ruta = partes
-                        ruta_absoluta = os.path.join(self.carpeta_simulada, ruta)
-                        if os.path.isfile(ruta_absoluta):
-                            # Construir nodos jerárquicos
-                            segmentos = url.split('.')
-                            nodo_actual = self.raiz
-                            for segmento in reversed(segmentos):
-                                hijo_existente = next((n for n in nodo_actual.children if n.name == segmento), None)
-                                if not hijo_existente:
-                                    hijo_existente = Node(segmento, parent=nodo_actual)
-                                nodo_actual = hijo_existente
-                            Node(ruta, parent=nodo_actual, ip=ip, ruta_archivo=ruta_absoluta)
-        except Exception as e:
-            print(f"Error al cargar el archivo host: {e}")
+        for linea in lineas:
+            html, ip, dominio, xx = linea.split(" ")
+            pag = Pagina(html, ip, dominio)
+            lista_paginas.append(pag)
 
-    def listar_paginas(self):
-        """Muestra todas las páginas disponibles recorriendo el árbol N-ario."""
-        print("Estructura de páginas disponibles:")
-        for pre, _, node in RenderTree(self.raiz):
-            if 'ruta_archivo' in node.__dict__:  # Nodo hoja (archivo HTML)
-                print(f"{pre}{node.name} (Archivo: {node.ruta_archivo}, IP: {node.ip})")
-            else:
-                print(f"{pre}{node.name}")
+        archivo.close()
 
-    def ir(self, direccion):
-        """Busca y muestra el contenido del archivo HTML desde su URL o IP."""
-        for node in PreOrderIter(self.raiz):
-            if 'ruta_archivo' in node.__dict__ and (node.name == direccion or node.ip == direccion):
-                try:
-                    with open(node.ruta_archivo, 'r', encoding='utf-8') as archivo:
-                        print(f"Mostrando contenido de '{node.name}' ({node.ip}):")
-                        print(archivo.read())
-                        return
-                except Exception as e:
-                    print(f"Error al cargar el archivo '{node.ruta_archivo}': {e}")
-                    return
-        print(f"No se encontró ninguna página con la dirección '{direccion}'.")
+        return lista_paginas
+
+    def insert(self, pagina):
+        if not self.root:
+            self.root = NTreeNode(pagina)
+        else:
+            self._insert_recursive(self.root, pagina)
+
+    def _insert_recursive(self, node, pagina):
+        if not node.children:
+            node.insert(pagina)
+        else:
+            for child in node.children:
+                self._insert_recursive(child, pagina)
+
+    def traverse(self):
+        if self.root:
+            self._traverse_recursive(self.root)
+
+    def _traverse_recursive(self, node):
+        print(node)
+        for child in node.children:
+            self._traverse_recursive(child)
+
+    def inorden(self):
+        if self.root:
+            self._inorden_recursive(self.root)
+
+    def _inorden_recursive(self, node):
+        if node:
+            for child in node.children:
+                self._inorden_recursive(child)
+            print(node)
+    
+    def _inorden_recursive_search(self, node):
+        if node:
+            for child in node.children:
+                self._inorden_recursive(child)
+            print(self.pagina.dominio)
+
+    def postorden(self):
+        if self.root:
+            self._postorden_recursive(self.root)
+
+    def _postorden_recursive(self, node):
+        if node:
+            for child in node.children:
+                self._postorden_recursive(child)
+            print(node)
+    
+    def _postorden_recursive(self, node):
+        if node:
+            for child in node.children:
+                
+                self._postorden_recursive(child)
+            print(node)
+
+#Hacer una funcion que devuelva segun el nombre
+
+    def _postorden_recursive_search(self, node, dominio):
+            node= self.root
+            if node:
+                for child in node.children:
+                    if self.root.producto.dominio == dominio:
+                        return node
+                    self._postorden_recursive(child) 
+            return None
+
+    def ir(self, paginas,  dominio):
+        """Visita una página simulada cargando su contenido desde un archivo .html."""
+        lista_paginas = paginas
+        for pagina in lista_paginas:
+            print(pagina.dominio)
+            if pagina.dominio == dominio:
+                archivo_path = os.path.join("paginas_simuladas", dominio)
+                if os.path.isfile(archivo_path) and archivo_path.endswith(".html"):
+                    try:
+                        with open(archivo_path, 'r', encoding='utf-8') as archivo:
+                            self.contenido_actual = archivo.read()
+                        self.archivo_actual = dominio
+                        print(f"Página '{dominio}' cargada exitosamente.")
+                    except Exception as e:
+                        print(f"Error al cargar la página '{dominio}': {e}")
+                else:
+                    print(f"La página '{dominio}' no existe o no es un archivo .html válido.")
+
+            else: 
+                print("Pagina no encontrada")
+            
+
+    
+
 
 # Ejemplo de uso:
-if __name__ == "__main__":
-    # Supongamos que los archivos están en la carpeta 'paginas_simuladas'
-    carpeta_simulada = "paginas_simuladas"
-    archivo_host = "host.txt"
+n_tree = NTree()
 
-    navegador = ArbolNarioPaginas(archivo_host, carpeta_simulada)
-    
-    # Listar las páginas
-    navegador.listar_paginas()
-    
-    # Acceder a una página
-    navegador.ir("www.google.com")
-    navegador.ir("192.168.102")
+# Crear e insertar productos
+paginas = n_tree.Abrir_txt()
+for pagina in paginas:
+    n_tree.insert(pagina)
+
+# Recorrer el árbol en inorden
+print("\nInorden traversal of the constructed N-tree with Productos is:")
+
+n_tree.inorden()
+
+print("_____________________-")
+n_tree.ir(paginas, "www.youtube.com")
+
+"""
+
+print("\nBuscar producto:")
+n_tree._postorden_recursive_search(None, "Producto H")
+"""

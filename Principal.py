@@ -44,11 +44,10 @@ class Principal:
         print("--> guardar_historial: Guarda el historial en un archivo csv")
         print("--> buscar <palabra_clave>: Realiza una búsqueda de palabras clave en el historial de búsquedas")
         print("--> mostrar_historial_busquedas: Muestra todas las búsquedas almacenadas en orden")
-        print("--> eliminar_busqueda_key")
-        print("--> eliminar_busqueda_fecha")            
-        print("--> agregar_cache")           
-        print("--> obtener_cache")           
-        print("--> vaciar_cache")
+        print("--> eliminar_busqueda <palabra_clave> o <fecha>: elimina todas las entradas de búsqueda que contengan la fecha o palabra clave especificada")            
+        print("--> agregar_cache <url> <contenido>: Agrega contenido a la caché para la URL especificada")           
+        print("--> obtener_cache <url>: Recupera el contenido almacenado en caché para la URL especificada")           
+        print("--> vaciar_cache <url> o <fecha>: Permite vaciar la caché de manera selectiva")
         print("--> salir: Sale del navegador")
 
 
@@ -177,11 +176,9 @@ class Principal:
         elif c == "mostrar_historial_busquedas":
             pass
 
-        elif c.startswith("eliminar_busqueda_key"):
+        elif c.startswith("eliminar_busqueda"):
             pass
         
-        elif c.startswith("eliminar_busqueda_fecha"):
-            pass
 
         elif c.startswith("agregar_cache"):
             pass

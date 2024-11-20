@@ -116,9 +116,9 @@ class NTree:
                         return node
                     self._postorden_recursive(child) 
             return None
-
+"""
     def ir(self, paginas,  dominio):
-        """Visita una página simulada cargando su contenido desde un archivo .html."""
+        
         lista_paginas = paginas
         for pagina in lista_paginas:
             print(pagina.dominio)
@@ -137,7 +137,7 @@ class NTree:
 
             else: 
                 print("Pagina no encontrada")
-            
+            """
 
     
 

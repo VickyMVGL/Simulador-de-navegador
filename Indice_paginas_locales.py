@@ -121,22 +121,14 @@ class NTree:
         
         lista_paginas = paginas
         for pagina in lista_paginas:
-            print(pagina.dominio)
-            if pagina.dominio == dominio:
-                archivo_path = os.path.join("paginas_simuladas", dominio)
-                if os.path.isfile(archivo_path) and archivo_path.endswith(".html"):
-                    try:
-                        with open(archivo_path, 'r', encoding='utf-8') as archivo:
-                            self.contenido_actual = archivo.read()
-                        self.archivo_actual = dominio
-                        print(f"Página '{dominio}' cargada exitosamente.")
-                    except Exception as e:
-                        print(f"Error al cargar la página '{dominio}': {e}")
-                else:
-                    print(f"La página '{dominio}' no existe o no es un archivo .html válido.")
-
-            else: 
-                print("Pagina no encontrada")
+            try:
+                with open(nodo.ruta_archivo, 'r', encoding='utf-8') as archivo:
+                    print(f"Mostrando contenido de '{nodo.name}' ({nodo.ip}):\n")
+                    print(archivo.read())
+                return
+            except Exception as e:
+                print(f"Error al abrir el archivo '{nodo.ruta_archivo}': {e}")
+                return
             """
 
     

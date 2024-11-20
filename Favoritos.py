@@ -134,25 +134,41 @@ class AVLFileSystem:
 
     def eliminar_favorito(self, id, html, ip, dominio):
         self.raiz = self.eliminar(self.raiz, id, html, ip, dominio)
-    
-    def preorden(self, nodo):
-        print(nodo.id)
-        print(nodo.dominio)
-        if nodo.izquierda != None:
-            self.preorden(nodo.izquierda)
-        if nodo.derecha != None:
-            self.preorden(nodo.derecha)
+
         
+    
+    def buscar_postorden(self, nodo, resultado=None):
+        if resultado is None:
+            resultado = []  # Inicializa la lista de resultados solo una vez
+        
+        if nodo:
+            # Recorrer el subárbol izquierdo
+            self.buscar_postorden(nodo.izquierda, resultado)
+            # Recorrer el subárbol derecho
+            self.buscar_postorden(nodo.derecha, resultado)
+            # Añadir el nodo actual a los resultados
+            resultado.append({
+                "id": nodo.id,
+                "html": nodo.html,
+                "ip": nodo.ip,
+                "dominio": nodo.dominio
+            })
+
+        return resultado
+
+    def mostrar_favoritos(self):
+        return self.buscar_postorden(self.raiz)
+            
             
 # Ejemplo de uso
-avl_fs = AVLFileSystem()
-avl_fs.agregar_favorito("1", "p1", 123, "SD")
-avl_fs.agregar_favorito("2", "p2", 150, "CA")
-avl_fs.agregar_favorito("3", "p3", 100, "Sd")
-
-avl_fs.preorden(avl_fs.raiz)
-print("______________")
-
-avl_fs.eliminar_favorito("2", "p2", 150, "CA")
-
-avl_fs.preorden(avl_fs.raiz)
+fs = AVLFileSystem()
+fs.agregar_favorito(10, "<html1>", "192.168.1.1", "example.com")
+fs.agregar_favorito(5, "<html2>", "192.168.1.2", "example2.com")
+fs.agregar_favorito(15, "<html3>", "192.168.1.3", "example3.com")
+fs.agregar_favorito(3, "<html4>", "192.168.1.4", "example4.com")
+fs.agregar_favorito(7, "<html5>", "192.168.1.5", "example5.com")
+fs.agregar_favorito(20, "<html6>", "192.168.1.6", "example6.com")
+print("_________________________________")
+# Buscar favoritos en preorden
+favoritos = fs.obtener_favoritos_preorden()
+print(favoritos)

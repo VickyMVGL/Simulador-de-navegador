@@ -1,5 +1,6 @@
 import pagina, Descargas, Historial, Vizualizacion, Pestaña, Historial_Busquedas, Cache, Favoritos, Indice_paginas_locales
 from datetime import datetime
+from Favoritos import AVLFileSystem
 
 class Principal:
 
@@ -226,16 +227,17 @@ class Principal:
             self.leer_comando()
         
         elif c.startswith("agregar_favorito"):
+            fs = AVLFileSystem()
             _, url_o_ip = c.split(" ", 1)
             
             for pagina in self.lista_paginas:
                 if pagina.dominio == url_o_ip or pagina.ip == url_o_ip:
-                    pagina.vizualizar()
+                    id = len(self.lista_paginas)
                     dominio = pagina.dominio
                     html = pagina.html
                     ip = pagina.ip
                     nombre_sitio=pagina.dominio
-                    Favoritos.AVLFileSystem.agregar_favorito(html, ip, dominio, nombre_sitio)
+                    fs.agregar_favorito(id, html, ip, dominio, nombre_sitio)
                     self.leer_comando()
                     
                     

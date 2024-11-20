@@ -41,9 +41,11 @@ class HistorialABB:
             self._buscar_nodo(nodo.derecha, clave, resultados)
 
     def mostrar_historial(self):
+        print("Historial:")
+        print("------------")
         historial = []
         self._inorden(self.raiz, historial)
-        return historial
+        print(historial)
 
     def _inorden(self, nodo, historial):
         if nodo is not None:
@@ -111,8 +113,8 @@ class HistorialABB:
             for clave, fecha_hora in historial:
                 archivo.write(f"{clave},{fecha_hora}\n")
 
-
 """
+
 # Ejemplo de uso
 if __name__ == "__main__":
     historial = HistorialABB()
@@ -126,13 +128,13 @@ if __name__ == "__main__":
     print("Búsqueda de 'python':", historial.buscar("python"))
 
     # Mostrar historial completo
-    print("Historial completo:", historial.mostrar_historial())
+    historial.mostrar_historial()
 
     # Eliminar por clave
-    historial.eliminar_por_clave("python")
-    print("Historial después de eliminar 'python':", historial.mostrar_historial())
+    #historial.eliminar_por_clave("python")
+    #historial.mostrar_historial()
 
     # Eliminar por fecha
-    historial.eliminar_por_fecha("2024-01-01")
-    print("Historial después de eliminar por fecha:", historial.mostrar_historial())
+    #historial.eliminar_por_fecha("2024-01-01")
+    #print("Historial después de eliminar por fecha:", historial.mostrar_historial())
 """

@@ -198,6 +198,7 @@ class Principal:
 
         elif c.startswith("agregar_cache "):
             _, url_o_ip = c.split(" ", 1)
+            _, _, contenido = c.split(" ",1)
             for pagina in self.lista_paginas:
                 if pagina.dominio == url_o_ip or pagina.ip == url_o_ip:
                     url_o_ip = str(url_o_ip)

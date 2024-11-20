@@ -162,6 +162,7 @@ class Principal:
         elif c == "guardar_historial":
             
             self.historial.guardar_historial(archivo_csv='historial.csv')
+            self.leer_comando()
 
         elif c == "mostrar_contenido_basico":
             print("")
@@ -174,25 +175,35 @@ class Principal:
             pass
 
         elif c.startswith("buscar"):
-            pass
+            self.hist_busqueda.buscar()
+            self.leer_comando()
+            
+            
 
         elif c == "mostrar_historial_busquedas":
-            pass
+            self.hist_busqueda.mostrar_historial()
+            self.leer_comando()
 
         elif c.startswith("eliminar_busqueda_key"):
-            pass
+            _, n =c.split(" ",1)
+            self.hist_busqueda.eliminar_por_clave(n)
+            self.leer_comando()
+            
         
         elif c.startswith("eliminar_busqueda_fecha"):
-            pass
+            _, n =c.split(" ",1)
+            self.hist_busqueda.eliminar_por_fecha(n)
+            self.leer_comando()
+            
 
         elif c.startswith("agregar_cache"):
-            pass
+            self.leer_comando()
 
         elif c.startswith("obtener_cache"):
-            pass
+            self.leer_comando()
 
         elif c.startswith("vaciar_cache"):
-            pass
+            self.leer_comando()
 
         elif c == "salir":
             print("Muchas gracias, hasta pronto!")

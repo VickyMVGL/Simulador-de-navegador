@@ -37,7 +37,7 @@ class NTree:
         self.root = None
 
     def Abrir_txt(self):
-        archivo=open(r'host.txt')
+        archivo=open('Simulador-de-navegador\host.txt')
         print(archivo)
         lineas = archivo.readlines()
         lista_paginas = []
@@ -142,16 +142,5 @@ paginas = n_tree.Abrir_txt()
 for pagina in paginas:
     n_tree.insert(pagina)
 
-# Recorrer el árbol en inorden
 print("\nInorden traversal of the constructed N-tree with Productos is:")
-
 n_tree.inorden()
-
-print("_____________________-")
-n_tree.ir(paginas, "www.youtube.com")
-
-"""
-
-print("\nBuscar producto:")
-n_tree._postorden_recursive_search(None, "Producto H")
-"""

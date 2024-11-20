@@ -2,7 +2,7 @@ from datetime import datetime
 import csv
 
 class NodoPagina:
-    def __init__(self, id, html, ip, dominio, nombre_sitio):
+    def __init__(self, html, ip, dominio, nombre_sitio):
         self.id = id
         self.html = html
         self.ip = ip
@@ -83,6 +83,7 @@ class AVLFileSystem:
         return nodo
 
     def agregar_favorito(self,  id, html, ip, dominio, nombre_sitio):
+        
         self.raiz = self.agregar(self.raiz, id, html, ip, dominio, nombre_sitio)
     
     def obtener_minimo(self, nodo):

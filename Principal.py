@@ -1,4 +1,4 @@
-import pagina, Descargas, Historial, Vizualizacion, Pestaña, Historial_Busquedas, Cache
+import pagina, Descargas, Historial, Vizualizacion, Pestaña, Historial_Busquedas, Cache, Favoritos, Indice_paginas_locales
 from datetime import datetime
 
 class Principal:
@@ -12,7 +12,7 @@ class Principal:
         self.tab = Pestaña.BrowserTabs()
 
     def Abrir_txt(self):
-        archivo=open(r'host.txt')
+        archivo=open('Simulador-de-navegador\host.txt')
         print(archivo)
         lineas = archivo.readlines()
         
@@ -203,6 +203,45 @@ class Principal:
             self.leer_comando()
 
         elif c.startswith("vaciar_cache"):
+            self.leer_comando()
+        
+        #Favoritos
+        elif c =="mostrar_favoritos":
+            Favoritos.AVLFileSystem.mostrar_favoritos()
+            self.leer_comando()
+
+        elif c.startswith("buscar_favorito"):
+            _, n =c.split(" ",1)
+            Favoritos.AVLFileSystem.buscar_favorito(n)
+            self.leer_comando()
+        
+        elif c.startswith("agregar_favorito"):
+            _, url_o_ip = c.split(" ", 1)
+            
+            for pagina in self.lista_paginas:
+                if pagina.dominio == url_o_ip or pagina.ip == url_o_ip:
+                    pagina.vizualizar()
+                    dominio = pagina.dominio
+                    html = pagina.html
+                    ip = pagina.ip
+                    nombre_sitio=pagina.dominio
+                    Favoritos.AVLFileSystem.agregar_favorito(html, ip, dominio, nombre_sitio)
+                    self.leer_comando()
+                    
+                    
+            print("No se encontró la página.")
+            self.leer_comando()
+
+        
+
+        elif c.startswith("eliminar_favorito"):
+            _, n =c.split(" ",1)
+            Favoritos.AVLFileSystem.eliminar_favorito(n)
+            self.leer_comando()
+        #Indice de paginas locales
+
+        elif c =="mostrar_paginas":
+            Indice_paginas_locales.NTree.inorden(self)
             self.leer_comando()
 
         elif c == "salir":

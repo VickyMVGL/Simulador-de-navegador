@@ -1,7 +1,6 @@
 from datetime import datetime
 import csv
 
-
 class NodoPagina:
     def __init__(self, id, html, ip, dominio, nombre_sitio):
         self.id = id

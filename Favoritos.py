@@ -2,7 +2,7 @@ from datetime import datetime
 import csv
 
 class NodoPagina:
-    def __init__(self, html, ip, dominio, nombre_sitio):
+    def __init__(self, id, html, ip, dominio, nombre_sitio):
         self.id = id
         self.html = html
         self.ip = ip
@@ -70,11 +70,11 @@ class AVLFileSystem:
 
         if balance < -1 and id > nodo.derecha.id:
             return self.rotar_izquierda(nodo)
-
+        
         if balance > 1 and id > nodo.izquierda.id:
             nodo.izquierda = self.rotar_izquierda(nodo.izquierda)
             return self.rotar_derecha(nodo)
-
+        
         if balance < -1 and id < nodo.derecha.id:
             nodo.derecha = self.rotar_derecha(nodo.derecha)
             return self.rotar_izquierda(nodo)
@@ -83,7 +83,6 @@ class AVLFileSystem:
         return nodo
 
     def agregar_favorito(self,  id, html, ip, dominio, nombre_sitio):
-        
         self.raiz = self.agregar(self.raiz, id, html, ip, dominio, nombre_sitio)
     
     def obtener_minimo(self, nodo):
@@ -227,7 +226,7 @@ class AVLFileSystem:
         self.guardar_favoritos_en_csv(archivo_csv)
             
 #Uso del modulo
-"""
+
 fs = AVLFileSystem()
 fs.agregar_favorito(10, "<html1>", "192.168.1.1", "example.com", "example")
 fs.agregar_favorito(5, "<html2>", "192.168.1.2", "example2.com", "example")
@@ -246,4 +245,3 @@ fs.buscar_favorito("192.168.1.8")  # ID que no existe
 
 favoritos = fs.mostrar_favoritos()
 print(favoritos)
-"""

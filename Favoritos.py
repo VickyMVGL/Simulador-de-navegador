@@ -226,7 +226,8 @@ class AVLFileSystem:
     def exportar_favoritos_a_csv(self, archivo_csv="favoritos.csv"):
         self.guardar_favoritos_en_csv(archivo_csv)
             
-# Ejemplo de uso
+#Uso del modulo
+"""
 fs = AVLFileSystem()
 fs.agregar_favorito(10, "<html1>", "192.168.1.1", "example.com", "example")
 fs.agregar_favorito(5, "<html2>", "192.168.1.2", "example2.com", "example")
@@ -242,3 +243,7 @@ print("_____________")
 
 fs.buscar_favorito("192.168.1.6")  # Favorito con ID 7
 fs.buscar_favorito("192.168.1.8")  # ID que no existe
+
+favoritos = fs.mostrar_favoritos()
+print(favoritos)
+"""
